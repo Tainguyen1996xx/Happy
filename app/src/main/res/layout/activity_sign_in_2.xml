@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="#374089">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Store"
+        android:textColor="@android:color/white"
+        android:fontFamily="@font/montserrat_bold"
+        android:textSize="24dp"/>
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:src="@drawable/lgo2"/>
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Login to your acount"
+        android:textSize="16dp"
+        android:fontFamily="@font/montserrat_variablefont_wght"
+        android:textColor="@color/white"/>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="45dp"
+        android:layout_width="311dp"
+        android:textColorHint="@color/white"
+        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeWidth="0dp"
+        android:layout_height="wrap_content"
+        app:hintTextColor="@color/white"
+        app:counterTextColor="@color/white"
+        android:hint="User Name"
+        app:endIconMode="clear_text"
+        app:endIconTint="@color/white">
+        <com.google.android.material.textfield.TextInputEditText
+            android:background="@drawable/border_edit_text"
+            android:id="@+id/edt_uname"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:paddingLeft="5dp"
+            android:textColor="@color/white"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_marginTop="16dp"
+        android:layout_width="311dp"
+        android:textColorHint="@color/white"
+        app:boxStrokeWidthFocused="0dp"
+        app:boxStrokeWidth="0dp"
+        android:layout_height="wrap_content"
+        app:hintTextColor="@color/white"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:background="@drawable/border_edit_text"
+            android:id="@+id/edt_pw"
+            android:paddingLeft="5dp"
+            android:textColor="@color/white"
+            android:inputType="textPassword"
+            android:hint="Password"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        >
+
+        <CheckBox
+            android:id="@+id/cbSaveValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Nhớ mật khẩu?"
+            android:visibility="invisible"
+            android:buttonTint="@color/white"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_marginLeft="90dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:id="@+id/tv_get_pw"
+            android:text="Quên mật khẩu?"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+    <TextView
+        android:layout_marginTop="14dp"
+        android:layout_width="311dp"
+        android:layout_height="48dp"
+        android:text="Login"
+        android:id="@+id/tv_login"
+        android:gravity="center"
+        android:textColor="#374089"
+        android:background="@drawable/border_button_fb"/>
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_marginTop="5dp"
+        android:layout_width="311dp"
+        android:layout_height="48dp" />
+    <LinearLayout
+        android:layout_marginBottom="@dimen/_20sdp"
+        android:layout_width="276dp"
+        android:layout_height="22dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Dont have an account?"
+            android:textColor="@color/white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" Sign up"
+            android:id="@+id/tv_signup"
+            android:textStyle="bold"
+            android:textColor="@color/white"/>
+    </LinearLayout>
+</LinearLayout>
