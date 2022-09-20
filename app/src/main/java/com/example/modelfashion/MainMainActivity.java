@@ -1,5 +1,6 @@
 package com.example.modelfashion;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -9,22 +10,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.modelfashion.Activity.ChatActivity;
 import com.example.modelfashion.Activity.MainActivity;
-import com.example.modelfashion.Activity.SignIn.SignUpActivity;
 import com.example.modelfashion.databinding.ActivityMainmainBinding;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
-public class MainMainActivity extends AppCompatActivity {
+public class MainMainActivity extends AppCompatActivity implements converSation {
     private ActivityMainmainBinding binding;
     private PreferenceManager preferenceManager;
     private RecentConverAdapter converAdapter;
@@ -46,7 +44,7 @@ public class MainMainActivity extends AppCompatActivity {
 
     private void init() {
         conversation = new ArrayList<>();
-        converAdapter = new RecentConverAdapter(conversation);
+        converAdapter = new RecentConverAdapter(conversation, this);
         binding.rcvConvert.setAdapter(converAdapter);
         database = FirebaseFirestore.getInstance();
     }
@@ -121,6 +119,7 @@ public class MainMainActivity extends AppCompatActivity {
 
 
 
+    @SuppressLint("NotifyDataSetChanged")
     private final EventListener<QuerySnapshot> eventListener = (value, err) -> {
         if (err != null) {
             return;
@@ -140,15 +139,11 @@ public class MainMainActivity extends AppCompatActivity {
                     } else {
                         chatMess.conversionName = documentChange.getDocument().getString(Constants.Key_sender_name);
                         chatMess.conversionId = documentChange.getDocument().getString(Constants.Key_sender_id);
-
                     }
-
                     chatMess.message = documentChange.getDocument().getString(Constants.Key_last_message);
                     chatMess.dateObject = documentChange.getDocument().getDate(Constants.Key_timestamp);
                     conversation.add(chatMess);
-
                 } else if (documentChange.getType() == DocumentChange.Type.MODIFIED) {
-
                     for (int i = 0; i < conversation.size(); i++) {
                         String senderid = documentChange.getDocument().getString(Constants.Key_sender_id);
                         String receiverid = documentChange.getDocument().getString(Constants.Key_recei_id);
@@ -182,4 +177,17 @@ public class MainMainActivity extends AppCompatActivity {
                 .addOnSuccessListener(unused -> showTOAST("token update ssff"))
                 .addOnFailureListener(e -> showTOAST("unable update"));
     }
+
+    @Override
+    public void converClicked(User user) {
+      Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
+      intent.putExtra(Constants.Key_User,user);
+      startActivity(intent);
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
+    }
+
 }

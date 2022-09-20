@@ -135,7 +135,7 @@ public class ChatActivity extends AppCompatActivity {
 
     private void setListeners() {
         binding.imageback.setOnClickListener(v -> onBackPressed());
-        binding.layoutSend.setOnClickListener(v -> sendMessage());
+        binding.sendmess.setOnClickListener(v -> sendMessage());
     }
 
     private String getReadDateTime(Date date) {

@@ -7,23 +7,11 @@
     android:background="@color/blue_active"
     tools:context=".Activity.ChatActivity">
 
-    <View
-        android:id="@+id/viewBg"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginTop="56dp"
-        android:layout_marginBottom="56dp"
-        android:background="@drawable/background_content_top"
-        app:layout_constraintBottom_toBottomOf="@id/layoutSend"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-    </View>
-
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:layout_marginTop="@dimen/_5sdp"
+        android:id="@+id/linearLayoutCompat4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginTop="@dimen/_15sdp"
         android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,32 +28,35 @@
         </androidx.appcompat.widget.AppCompatImageView>
 
         <TextView
-            android:layout_marginTop="@dimen/_3sdp"
             android:id="@+id/tvName"
-            android:paddingLeft="-10dp"
             android:layout_width="match_parent"
-            android:paddingRight="@dimen/_20sdp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="@dimen/_3sdp"
             android:ellipsize="end"
             android:gravity="center"
             android:maxLines="1"
+            android:paddingLeft="-10dp"
+            android:paddingRight="@dimen/_20sdp"
             android:textSize="@dimen/_20sdp"
             android:textStyle="bold" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvCHat"
+        android:background="@drawable/background_content_top"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/_60sdp"
+        android:layout_marginBottom="@dimen/_90sdp"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="20sp"
-        android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="@+id/viewBg"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat4"
         app:stackFromEnd="true">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -74,46 +65,18 @@
         android:id="@+id/progress"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        app:layout_constraintBottom_toBottomOf="@id/viewBg"
-        app:layout_constraintEnd_toEndOf="@id/viewBg"
-        app:layout_constraintStart_toStartOf="@id/viewBg"
-        app:layout_constraintTop_toTopOf="@id/viewBg">
-
-    </ProgressBar>
-
-
-    <FrameLayout
-        android:id="@+id/layoutSend"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/send_history"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:layout_marginBottom="@dimen/_5sdp"
-            android:id="@+id/appCompatImageView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="40dp"
-            android:layout_marginLeft="40dp"
-            android:padding="8dp"
-            android:src="@mipmap/ic_launcher"
-            android:tint="@color/white" />
-    </FrameLayout>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/rcvCHat"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat4" />
 
     <EditText
         android:id="@+id/inputMess"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_50sdp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="@dimen/_70sdp"
         android:background="@color/background_category_gray"
         android:hint="@string/app_name"
         android:imeOptions="actionDone"
@@ -123,9 +86,18 @@
         android:paddingEnd="16dp"
         android:textColor="@color/black"
         android:textColorHint="@color/secondary_text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/layoutSend"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />
 
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sendmess"
+        android:layout_width="@dimen/_40sdp"
+        android:layout_height="@dimen/_40sdp"
+        android:src="@drawable/send_history"
+        android:tint="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/_25sdp"
+        app:layout_constraintStart_toEndOf="@+id/inputMess" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

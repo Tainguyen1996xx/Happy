@@ -94,4 +94,12 @@ public class UserActivity extends AppCompatActivity implements UserListener {
         startActivity(intent);
         finish();
     }
+
+    //    @Override
+//    public void onUserClicked(User user) {
+//        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
+//        intent.putExtra(Constants.Key_User, user);
+//        startActivity(intent);
+//        finish();
+//    }
 }

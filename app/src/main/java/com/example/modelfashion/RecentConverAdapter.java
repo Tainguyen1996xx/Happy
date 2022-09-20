@@ -13,9 +13,11 @@ import java.util.List;
 public class RecentConverAdapter extends RecyclerView.Adapter<RecentConverAdapter.ConversionViewHoder> {
 
     private final List<ChatMess> chatMesses;
+    private final converSation converSation;
 
-    public RecentConverAdapter(List<ChatMess> chatMesses) {
+    public RecentConverAdapter(List<ChatMess> chatMesses, com.example.modelfashion.converSation converSation) {
         this.chatMesses = chatMesses;
+        this.converSation = converSation;
     }
 
     @NonNull
@@ -39,7 +41,9 @@ public class RecentConverAdapter extends RecyclerView.Adapter<RecentConverAdapte
         return chatMesses.size();
     }
 
+
         class ConversionViewHoder extends RecyclerView.ViewHolder {
+
         ItemContainerRecentConversionBinding binding;
 
         ConversionViewHoder(ItemContainerRecentConversionBinding itemContainerRecentConversionBinding) {
@@ -50,6 +54,13 @@ public class RecentConverAdapter extends RecyclerView.Adapter<RecentConverAdapte
         void setData(ChatMess chatMess) {
             binding.tvText.setText(chatMess.conversionName);
             binding.tvRecentMess.setText(chatMess.message);
+            binding.getRoot().setOnClickListener(v -> {
+                User user = new User();
+                user.id =  chatMess.conversionId;
+                user.name =  chatMess.conversionName;
+                converSation.converClicked(user);
+            });
         }
     }
+
 }

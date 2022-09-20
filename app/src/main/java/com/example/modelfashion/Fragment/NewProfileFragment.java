@@ -155,7 +155,8 @@ public class NewProfileFragment extends Fragment {
             startActivity(intent);
         });
         tvProfileLogout.setOnClickListener(view -> {
-//            OpenDialog();
+            Intent intent = new Intent(getContext(), SignInActivity.class);
+            startActivity(intent);
         });
         btnTrans.setOnClickListener(new View.OnClickListener() {
             @Override

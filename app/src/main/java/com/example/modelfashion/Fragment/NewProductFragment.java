@@ -39,12 +39,14 @@ import com.example.modelfashion.Activity.SignIn.SignUpActivity;
 import com.example.modelfashion.Adapter.ProductListAdapter;
 import com.example.modelfashion.Adapter.VpSaleMainFmAdapter;
 import com.example.modelfashion.Interface.ApiRetrofit;
+import com.example.modelfashion.MainMainActivity;
 import com.example.modelfashion.Model.Brand;
 import com.example.modelfashion.Model.ItemSaleMain;
 import com.example.modelfashion.Model.response.my_product.CartProduct;
 import com.example.modelfashion.Model.response.my_product.MyProduct;
 import com.example.modelfashion.R;
 import com.example.modelfashion.Utility.Constants;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Timer;
@@ -65,6 +67,7 @@ public class NewProductFragment extends Fragment {
     private TextView tvSeeBrand;
     private ImageView imgFav;
     private EditText edtSearch;
+    private FloatingActionButton floating;
     private SwipeRefreshLayout refreshLayout;
     ArrayList<MyProduct> arrSearchProduct = new ArrayList<>();
     Timer timer;
@@ -98,6 +101,7 @@ public class NewProductFragment extends Fragment {
         imgBrand6 = view.findViewById(R.id.brand_logo6);
         tvSeeBrand = view.findViewById(R.id.tv_see_all_brand);
         edtSearch = view.findViewById(R.id.edt_search);
+        floating = view.findViewById(R.id.floating);
         imgFav = view.findViewById(R.id.img_fav_mainfm);
         refreshLayout = view.findViewById(R.id.refresh_layout);
         Bundle info = getArguments();
@@ -109,6 +113,11 @@ public class NewProductFragment extends Fragment {
         vpSaleMain.setAdapter(vpSaleMainFmAdapter);
 
         PopupMenu popupMenu = new PopupMenu(getActivity(),edtSearch);
+
+        floating.setOnClickListener(v ->{
+            Intent intent = new Intent(getContext(), MainMainActivity.class);
+            startActivity(intent);
+        });
         edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -121,6 +130,7 @@ public class NewProductFragment extends Fragment {
                 popupMenu.getMenu().clear();
                 arrSearchProduct.removeAll(arrSearchProduct);
             }
+
 
             @Override
             public void afterTextChanged(Editable editable) {
@@ -195,70 +205,70 @@ public class NewProductFragment extends Fragment {
         });
         return view;
     }
-//    private void GetProductData(){
-//        ProgressDialog progressDialog = new ProgressDialog(getContext());
-//        progressDialog.setMessage("Đang tải sản phẩm");
-//        progressDialog.show();
-////        progressDialog.setCancelable(false);
-//        ApiRetrofit.apiRetrofit.GetAllProduct().enqueue(new Callback<ArrayList<MyProduct>>() {
-//            @RequiresApi(api = Build.VERSION_CODES.N)
-//            @Override
-//            public void onResponse(Call<ArrayList<MyProduct>> call, Response<ArrayList<MyProduct>> response) {
-//                GetBrandData();
-//                arrMyProduct = response.body();
-//                ApiRetrofit.apiRetrofit.GetRecentType().enqueue(new Callback<ArrayList<String>>() {
-//                    @Override
-//                    public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-//                        progressDialog.hide();
-//                        arrType = response.body();
-//                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-//                        rvProductFrag.setLayoutManager(linearLayoutManager);
-//                        productListAdapter = new ProductListAdapter(getContext(),arrType,arrMyProduct);
-//                        rvProductFrag.setAdapter(productListAdapter);
-//                        productListAdapter.onItemClickListener(new ProductListAdapter.OnItemClickListener() {
-//                            @Override
-//                            public void imgClick(int position, MyProduct product) {
-//
-//                                Log.e("test_size",product.getSizes()+"");
-//                                Intent intent = new Intent(getActivity(), NewProductDetailAct.class);
-//                                intent.putExtra(Constants.KEY_PRODUCT_ID,product.getId());
-//                                intent.putExtra("user_id",user_id);
-//                                startActivity(intent);
-//                            }
-//
-//                            @Override
-//                            public void imgAddToCartClick(int position, MyProduct product) {
-//                                if(user_id.equalsIgnoreCase("null")){
-//                                    Toast.makeText(getContext(), "Thực hiện đăng nhập để sử dụng chức năng này", Toast.LENGTH_SHORT).show();
-//                                }else {
-//                                    AddToFavorite(product.getId());
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void seeAll(int position, String type) {
-//                                Intent intent = new Intent(getActivity(), GeneralProductAct.class);
-//                                intent.putExtra("user_id",user_id);
-//                                intent.putExtra("type", type);
-//                                startActivity(intent);
-//                            }
-//                        });
-//                        Log.e("loading_prod",arrMyProduct.size()+" "+arrType);
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<ArrayList<String>> call, Throwable t) {
-//
-//                    }
-//                });
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ArrayList<MyProduct>> call, Throwable t) {
-//                progressDialog.hide();
-//            }
-//        });
-//    }
+    private void GetProductData(){
+        ProgressDialog progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Đang tải sản phẩm");
+        progressDialog.show();
+//        progressDialog.setCancelable(false);
+        ApiRetrofit.apiRetrofit.GetAllProduct().enqueue(new Callback<ArrayList<MyProduct>>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(Call<ArrayList<MyProduct>> call, Response<ArrayList<MyProduct>> response) {
+                GetBrandData();
+                arrMyProduct = response.body();
+                ApiRetrofit.apiRetrofit.GetRecentType().enqueue(new Callback<ArrayList<String>>() {
+                    @Override
+                    public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
+                        progressDialog.hide();
+                        arrType = response.body();
+                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                        rvProductFrag.setLayoutManager(linearLayoutManager);
+                        productListAdapter = new ProductListAdapter(getContext(),arrType,arrMyProduct);
+                        rvProductFrag.setAdapter(productListAdapter);
+                        productListAdapter.onItemClickListener(new ProductListAdapter.OnItemClickListener() {
+                            @Override
+                            public void imgClick(int position, MyProduct product) {
+
+                                Log.e("test_size",product.getSizes()+"");
+                                Intent intent = new Intent(getActivity(), NewProductDetailAct.class);
+                                intent.putExtra(Constants.KEY_PRODUCT_ID,product.getId());
+                                intent.putExtra("user_id",user_id);
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void imgAddToCartClick(int position, MyProduct product) {
+                                if(user_id.equalsIgnoreCase("null")){
+                                    Toast.makeText(getContext(), "Thực hiện đăng nhập để sử dụng chức năng này", Toast.LENGTH_SHORT).show();
+                                }else {
+                                    AddToFavorite(product.getId());
+                                }
+                            }
+
+                            @Override
+                            public void seeAll(int position, String type) {
+                                Intent intent = new Intent(getActivity(), GeneralProductAct.class);
+                                intent.putExtra("user_id",user_id);
+                                intent.putExtra("type", type);
+                                startActivity(intent);
+                            }
+                        });
+                        Log.e("loading_prod",arrMyProduct.size()+" "+arrType);
+                    }
+
+                    @Override
+                    public void onFailure(Call<ArrayList<String>> call, Throwable t) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<MyProduct>> call, Throwable t) {
+                progressDialog.hide();
+            }
+        });
+    }
     private void GetBrandData(){
             ApiRetrofit.apiRetrofit.Get6RdBrand().enqueue(new Callback<ArrayList<Brand>>() {
                 @Override
@@ -352,7 +362,7 @@ public class NewProductFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        GetProductData();
+        GetProductData();
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
