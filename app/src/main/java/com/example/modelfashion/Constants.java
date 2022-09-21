@@ -20,5 +20,9 @@ public class Constants {
     public static final String Key_sender_name = "sendername";
     public static final String Key_recei_name = "receiname";
     public static final String Key_last_message = "lastmess";
+    public static final String Key_last_Avalibity = "valibity";
+    public static final String REOMTE_MSG_AUT = "AUTHRIZATION";
+    public static final String REOMTE_MSG_CONTENT_TYPE = "Conten-type";
+
 
 }

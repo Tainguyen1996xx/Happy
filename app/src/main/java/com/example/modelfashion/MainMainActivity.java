@@ -6,8 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.example.modelfashion.Activity.ChatActivity;
 import com.example.modelfashion.Activity.MainActivity;
 import com.example.modelfashion.databinding.ActivityMainmainBinding;
@@ -22,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class MainMainActivity extends AppCompatActivity implements converSation {
+public class MainMainActivity extends BaesActivity implements converSation {
     private ActivityMainmainBinding binding;
     private PreferenceManager preferenceManager;
     private RecentConverAdapter converAdapter;
@@ -50,11 +48,9 @@ public class MainMainActivity extends AppCompatActivity implements converSation 
     }
 
     private void loadUserDETAIL() {
-//        binding.tvName.setText(
-//                preferenceManager.getString(Constants.Key_name));
+        binding.tvName.setText(
+                preferenceManager.getString(Constants.Key_name));
     }
-
-
 
     private void setListen() {
 //        binding.imgOut.setOnClickListener(new View.OnClickListener() {
@@ -189,5 +185,4 @@ public class MainMainActivity extends AppCompatActivity implements converSation 
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);
     }
-
 }

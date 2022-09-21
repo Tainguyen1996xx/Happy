@@ -24,7 +24,9 @@ import com.example.modelfashion.Activity.MainActivity;
 import com.example.modelfashion.Common.ProgressLoadingCommon;
 import com.example.modelfashion.Fragment.FragmentProfile;
 import com.example.modelfashion.Interface.ApiRetrofit;
+import com.example.modelfashion.MainMainActivity;
 import com.example.modelfashion.Model.response.User.User;
+import com.example.modelfashion.PreferenceManager;
 import com.example.modelfashion.R;
 import com.example.modelfashion.Utility.Constants;
 import com.example.modelfashion.network.ApiClient;
@@ -37,9 +39,11 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 
+import java.util.HashMap;
 import java.util.regex.Pattern;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +64,7 @@ public class SignInActivity extends AppCompatActivity {
 //    ProgressLoadingCommon progressLoadingCommon;
     String fcmToken;
     SignInButton signInButton;
+    private PreferenceManager preferenceManager;
     GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,8 +138,26 @@ public class SignInActivity extends AppCompatActivity {
                                 prefsEditor.apply();
                                 Toast.makeText(SignInActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
 //                            onBackPressed();
-                                Intent intent = new Intent(SignInActivity.this, MainActivity.class);
-                                startActivity(intent);
+
+
+                                FirebaseFirestore database = FirebaseFirestore.getInstance();
+                                HashMap<String, String> user = new HashMap<>();
+                                user.put(com.example.modelfashion.Constants.Key_name, edtUname.getText().toString());
+                                user.put(com.example.modelfashion.Constants.Key_email, edtUname.getText().toString());
+                                user.put(com.example.modelfashion.Constants.Key_pass, edtPw.getText().toString());
+                                database.collection(com.example.modelfashion.Constants.Key_collection_user)
+                                        .add(user)
+                                        .addOnSuccessListener(documentReference -> {
+                                            preferenceManager.putBoolean(com.example.modelfashion.Constants.Key_SignEDname, true);
+                                            preferenceManager.putString(com.example.modelfashion.Constants.Key_id_user, documentReference.getId());
+                                            preferenceManager.putString(com.example.modelfashion.Constants.Key_name, documentReference.getId());
+                                            Intent intent = new Intent(SignInActivity.this, MainActivity.class);
+                                            startActivity(intent);
+                                        })
+                                        .addOnFailureListener(exception -> {
+                                            Toast.makeText(SignInActivity.this, "Đăng nhập k thành công", Toast.LENGTH_SHORT).show();
+                                        });
+
                             } else {
                                 GoogleSignOut();
                             }

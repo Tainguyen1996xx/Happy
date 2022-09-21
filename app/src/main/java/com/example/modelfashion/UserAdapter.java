@@ -46,7 +46,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHoder>
 
         UserViewHoder(ItemContainerUserBinding itemContainerUserBinding) {
             super(itemContainerUserBinding.getRoot());
-
             binding = itemContainerUserBinding;
         }
 
@@ -55,6 +54,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHoder>
             binding.tvText.setText(user.email);
             binding.getRoot().setOnClickListener(v -> userListener.onUserClicked(user));
         }
-
     }
+
 }

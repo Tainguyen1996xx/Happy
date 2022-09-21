@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.modelfashion.Activity.ChatActivity;
 import com.example.modelfashion.Utility.PreferenceManager;
@@ -16,7 +15,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserActivity extends AppCompatActivity implements UserListener {
+public class UserActivity extends BaesActivity implements UserListener {
 
     private ActivityUserBinding binding;
     private PreferenceManager preferenceManager;
@@ -56,10 +55,7 @@ public class UserActivity extends AppCompatActivity implements UserListener {
                             user.email = documentSnapshot.getString(Constants.Key_email);
                             user.token = documentSnapshot.getString(Constants.Key_FCM_TOKEN);
                             user.id= documentSnapshot.getId();
-
-
                             users.add(user);
-
                         }
                         if (users.size()>0){
                             UserAdapter userAdapter = new UserAdapter(users, this);
@@ -73,7 +69,6 @@ public class UserActivity extends AppCompatActivity implements UserListener {
                     }
                 });
     }
-
     private void showERR() {
         binding.edErrMess.setText(String.format("%s",  "No user avalable"));
         binding.edErrMess.setVisibility(View.VISIBLE);
@@ -95,11 +90,4 @@ public class UserActivity extends AppCompatActivity implements UserListener {
         finish();
     }
 
-    //    @Override
-//    public void onUserClicked(User user) {
-//        Intent intent = new Intent(getApplicationContext(), ChatActivity.class);
-//        intent.putExtra(Constants.Key_User, user);
-//        startActivity(intent);
-//        finish();
-//    }
 }

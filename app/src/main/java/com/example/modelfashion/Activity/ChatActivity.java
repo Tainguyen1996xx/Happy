@@ -3,10 +3,9 @@ package com.example.modelfashion.Activity;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.modelfashion.BaesActivity;
 import com.example.modelfashion.ChatAdapter;
 import com.example.modelfashion.ChatMess;
 import com.example.modelfashion.Constants;
@@ -28,8 +27,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
-public class ChatActivity extends AppCompatActivity {
+public class ChatActivity extends BaesActivity {
     private ActivityChatBinding binding;
     private User receiUser;
     private List<ChatMess> chatMesses;
@@ -37,7 +37,7 @@ public class ChatActivity extends AppCompatActivity {
     private ChatAdapter chatAdapter;
     private FirebaseFirestore database;
     private String conversationId = null;
-
+    private Boolean isReciverAvalibity = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +60,29 @@ public class ChatActivity extends AppCompatActivity {
         database = FirebaseFirestore.getInstance();
     }
 
+
+    private void ListenAvalibtyRec() {
+        database.collection(Constants.Key_collection_user).document(receiUser.id
+        ).addSnapshotListener(ChatActivity.this, (value, err) -> {
+            if (err != null) {
+                return;
+            }
+            if (value != null) {
+                if (value.get(Constants.Key_last_Avalibity) != null) {
+                    int availibity = Objects.requireNonNull(
+                            value.getLong(Constants.Key_last_Avalibity).intValue());
+                    isReciverAvalibity = availibity == 1;
+                }
+                receiUser.token = value.getString(Constants.Key_FCM_TOKEN);
+            }
+            if(isReciverAvalibity){
+                binding.tvAvalinity.setVisibility(View.VISIBLE);
+            }else {
+                binding.tvAvalinity.setVisibility(View.GONE);
+            }
+        });
+    }
+
     private void sendMessage() {
         HashMap<String, Object> message = new HashMap<>();
         message.put(Constants.Key_sender_id, preferenceManager.getString(Constants.Key_id_user));
@@ -67,16 +90,17 @@ public class ChatActivity extends AppCompatActivity {
         message.put(Constants.Key_message, binding.inputMess.getText().toString());
         message.put(Constants.Key_timestamp, new Date());
         database.collection(Constants.Key_collection_chat).add(message);
-        if (conversationId != null){
+
+        if (conversationId != null) {
             updateConvert(binding.inputMess.getText().toString());
-        }else {
+        } else {
             HashMap<String, Object> conversion = new HashMap<>();
-            conversion.put(Constants.Key_sender_id,preferenceManager.getString(Constants.Key_id_user));
-            conversion.put(Constants.Key_sender_name,preferenceManager.getString(Constants.Key_name));
-            conversion.put(Constants.Key_recei_id,receiUser.id);
-            conversion.put(Constants.Key_recei_name,receiUser.name);
-            conversion.put(Constants.Key_last_message,binding.inputMess.getText().toString());
-            conversion.put(Constants.Key_timestamp,new Date());
+            conversion.put(Constants.Key_sender_id, preferenceManager.getString(Constants.Key_id_user));
+            conversion.put(Constants.Key_sender_name, preferenceManager.getString(Constants.Key_name));
+            conversion.put(Constants.Key_recei_id, receiUser.id);
+            conversion.put(Constants.Key_recei_name, receiUser.name);
+            conversion.put(Constants.Key_last_message, binding.inputMess.getText().toString());
+            conversion.put(Constants.Key_timestamp, new Date());
             addConvert(conversion);
         }
         binding.inputMess.setText(null);
@@ -123,7 +147,7 @@ public class ChatActivity extends AppCompatActivity {
             binding.rcvCHat.setVisibility(View.VISIBLE);
         }
         binding.progress.setVisibility(View.GONE);
-        if (conversationId == null){
+        if (conversationId == null) {
             checkForconvers();
         }
     };
@@ -143,21 +167,21 @@ public class ChatActivity extends AppCompatActivity {
     }
 
 
-    public void addConvert(HashMap<String , Object> conversion) {
+    public void addConvert(HashMap<String, Object> conversion) {
         database.collection(Constants.Key_collection_convertsation)
                 .add(conversion)
-                .addOnSuccessListener(documentReference ->conversationId = documentReference.getId());
+                .addOnSuccessListener(documentReference -> conversationId = documentReference.getId());
 
     }
 
-    public void updateConvert(String messs){
+    public void updateConvert(String messs) {
         DocumentReference documentReference =
                 database.collection(Constants.Key_collection_convertsation).document(conversationId);
-        documentReference.update(Constants.Key_last_message, messs,Constants.Key_timestamp,new Date());
+        documentReference.update(Constants.Key_last_message, messs, Constants.Key_timestamp, new Date());
     }
 
-    private void checkForconvers(){
-        if(chatMesses.size() != 0){
+    private void checkForconvers() {
+        if (chatMesses.size() != 0) {
             checkForconversRemote(
                     preferenceManager.getString(Constants.Key_id_user),
                     receiUser.id
@@ -171,16 +195,23 @@ public class ChatActivity extends AppCompatActivity {
         }
     }
 
-    private void checkForconversRemote(String senderid, String receverId){
+    private void checkForconversRemote(String senderid, String receverId) {
         database.collection(Constants.Key_collection_convertsation)
-                .whereEqualTo(Constants.Key_sender_id,senderid)
-                .whereEqualTo(Constants.Key_recei_id,receverId)
+                .whereEqualTo(Constants.Key_sender_id, senderid)
+                .whereEqualTo(Constants.Key_recei_id, receverId)
                 .get().addOnCompleteListener(conversionOnCompleteListener);
     }
+
     private final OnCompleteListener<QuerySnapshot> conversionOnCompleteListener = task -> {
         if (task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0) {
             DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
             conversationId = documentSnapshot.getId();
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        ListenAvalibtyRec();
+    }
 }

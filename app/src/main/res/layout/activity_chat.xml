@@ -42,21 +42,34 @@
             android:textStyle="bold" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 
+    <TextView
+        android:gravity="center"
+        android:text="@string/online"
+        android:visibility="gone"
+        android:id="@+id/tvAvalinity"
+        android:padding="@dimen/_2sdp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat4"
+        android:textSize="@dimen/_10sdp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#008000"
+        tools:ignore="SpUsage" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcvCHat"
-        android:background="@drawable/background_content_top"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/_60sdp"
-        android:layout_marginBottom="@dimen/_90sdp"
+        android:layout_height="0dp"
+        android:background="@drawable/background_content_top"
         android:clipToPadding="false"
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="20sp"
+        android:layout_marginBottom="@dimen/_20sdp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/inputMess"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayoutCompat4"
+        app:layout_constraintTop_toBottomOf="@+id/tvAvalinity"
         app:stackFromEnd="true">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -78,7 +91,6 @@
         android:layout_marginBottom="30dp"
         android:layout_marginEnd="@dimen/_70sdp"
         android:background="@color/background_category_gray"
-        android:hint="@string/app_name"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="text"

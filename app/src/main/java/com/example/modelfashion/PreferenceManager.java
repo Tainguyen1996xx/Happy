@@ -7,7 +7,6 @@ public class PreferenceManager {
    private final SharedPreferences sharedPreferences;
    public PreferenceManager(Context context){
        sharedPreferences =context.getSharedPreferences(Constants.Key_Pre_name,Context.MODE_PRIVATE);
-
    }
 
    public void putBoolean(String key, Boolean value){
@@ -35,9 +34,5 @@ public class PreferenceManager {
        editor.clear();
        editor.apply();
     }
-
-
-
-
 
 }
