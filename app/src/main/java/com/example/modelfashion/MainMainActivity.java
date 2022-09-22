@@ -80,8 +80,7 @@ public class MainMainActivity extends BaesActivity implements converSation {
             }
          binding.imgProfile.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), MainActivity.class)));
-
-
+        
     }
 
 //    private void signOut() {
