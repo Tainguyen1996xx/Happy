@@ -3,12 +3,14 @@ package com.example.modelfashion;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.example.modelfashion.Activity.ChatActivity;
 import com.example.modelfashion.Activity.MainActivity;
 import com.example.modelfashion.databinding.ActivityMainmainBinding;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
@@ -59,10 +61,23 @@ public class MainMainActivity extends BaesActivity implements converSation {
 //                signOut();
 //            }
 //        });
-
-        binding.floating.setOnClickListener(v ->
-                startActivity(new Intent(getApplicationContext(), UserActivity.class)));
-
+        FirebaseFirestore database = FirebaseFirestore.getInstance();
+        CollectionReference  reference = database.collection("users");
+        if (reference.equals("tainv0303")) {
+            binding.floating.setVisibility(View.GONE);
+        }else{
+                binding.floating.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FirebaseFirestore database = FirebaseFirestore.getInstance();
+                        CollectionReference reference = database.collection("users");
+                        Intent intent = new Intent(MainMainActivity.this, UserActivity.class);
+                        intent.putExtra(Constants.Key_name, preferenceManager.getString(Constants.Key_name));
+                        Log.d("Key_names", String.valueOf(reference));
+                        startActivity(intent);
+                    }
+                });
+            }
          binding.imgProfile.setOnClickListener(v ->
                 startActivity(new Intent(getApplicationContext(), MainActivity.class)));
 
@@ -178,6 +193,7 @@ public class MainMainActivity extends BaesActivity implements converSation {
     public void converClicked(User user) {
       Intent intent = new Intent(getApplicationContext(),ChatActivity.class);
       intent.putExtra(Constants.Key_User,user);
+        Log.d("assssssssss", String.valueOf(user));
       startActivity(intent);
     }
 

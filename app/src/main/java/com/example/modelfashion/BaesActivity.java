@@ -39,7 +39,6 @@ private DocumentReference documentReference;
     protected void onPause() {
         super.onPause();
         documentReference.update(Constants.Key_last_Avalibity, 0);
-
     }
 
     @Override
