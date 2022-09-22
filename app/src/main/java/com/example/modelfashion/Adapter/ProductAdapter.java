@@ -66,7 +66,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
             viewHolder.tvPrice.setText(money_format+" VNĐ");
         }
         String money_format = formatter.format(Integer.parseInt(arrProduct.get(i).getPrice().split("\\.")[0]));
-        Log.e("load_img",arrProduct.get(i).getPhotos().get(0));
         Glide.with(context).load(arrProduct.get(i).getPhotos().get(0).replace("localhost", Constants.KEY_IP)).into(viewHolder.img);
         viewHolder.tvProductName.setText(arrProduct.get(i).getProduct_name());
     }

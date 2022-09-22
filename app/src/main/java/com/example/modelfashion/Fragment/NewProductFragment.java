@@ -205,70 +205,7 @@ public class NewProductFragment extends Fragment {
         });
         return view;
     }
-    private void GetProductData(){
-        ProgressDialog progressDialog = new ProgressDialog(getContext());
-        progressDialog.setMessage("Đang tải sản phẩm");
-        progressDialog.show();
-//        progressDialog.setCancelable(false);
-        ApiRetrofit.apiRetrofit.GetAllProduct().enqueue(new Callback<ArrayList<MyProduct>>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onResponse(Call<ArrayList<MyProduct>> call, Response<ArrayList<MyProduct>> response) {
-                GetBrandData();
-                arrMyProduct = response.body();
-                ApiRetrofit.apiRetrofit.GetRecentType().enqueue(new Callback<ArrayList<String>>() {
-                    @Override
-                    public void onResponse(Call<ArrayList<String>> call, Response<ArrayList<String>> response) {
-                        progressDialog.hide();
-                        arrType = response.body();
-                        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                        rvProductFrag.setLayoutManager(linearLayoutManager);
-                        productListAdapter = new ProductListAdapter(getContext(),arrType,arrMyProduct);
-                        rvProductFrag.setAdapter(productListAdapter);
-                        productListAdapter.onItemClickListener(new ProductListAdapter.OnItemClickListener() {
-                            @Override
-                            public void imgClick(int position, MyProduct product) {
 
-                                Log.e("test_size",product.getSizes()+"");
-                                Intent intent = new Intent(getActivity(), NewProductDetailAct.class);
-                                intent.putExtra(Constants.KEY_PRODUCT_ID,product.getId());
-                                intent.putExtra("user_id",user_id);
-                                startActivity(intent);
-                            }
-
-                            @Override
-                            public void imgAddToCartClick(int position, MyProduct product) {
-                                if(user_id.equalsIgnoreCase("null")){
-                                    Toast.makeText(getContext(), "Thực hiện đăng nhập để sử dụng chức năng này", Toast.LENGTH_SHORT).show();
-                                }else {
-                                    AddToFavorite(product.getId());
-                                }
-                            }
-
-                            @Override
-                            public void seeAll(int position, String type) {
-                                Intent intent = new Intent(getActivity(), GeneralProductAct.class);
-                                intent.putExtra("user_id",user_id);
-                                intent.putExtra("type", type);
-                                startActivity(intent);
-                            }
-                        });
-                        Log.e("loading_prod",arrMyProduct.size()+" "+arrType);
-                    }
-
-                    @Override
-                    public void onFailure(Call<ArrayList<String>> call, Throwable t) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<ArrayList<MyProduct>> call, Throwable t) {
-                progressDialog.hide();
-            }
-        });
-    }
     private void GetBrandData(){
             ApiRetrofit.apiRetrofit.Get6RdBrand().enqueue(new Callback<ArrayList<Brand>>() {
                 @Override
@@ -342,27 +279,10 @@ public class NewProductFragment extends Fragment {
                 }
             });
     }
-    private void AddToFavorite(String product_id){
-        ApiRetrofit.apiRetrofit.InsertFavorite(user_id, product_id).enqueue(new Callback<String>() {
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                if(response.body().equalsIgnoreCase("true")){
-                    Toast.makeText(getContext(), "Thêm vào 'Theo dõi' thành công", Toast.LENGTH_SHORT).show();
-                }else {
-                    Toast.makeText(getContext(), "Sản phẩm đang theo dõi", Toast.LENGTH_SHORT).show();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-
-            }
-        });
-    }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        GetProductData();
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
